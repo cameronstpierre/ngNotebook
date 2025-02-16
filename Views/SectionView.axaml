@@ -1,0 +1,43 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:ngNotebook.ViewModels"
+             xmlns:views="clr-namespace:ngNotebook.Views"
+             mc:Ignorable="d"
+			 d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ngNotebook.Views.SectionView"
+             x:DataType="viewModels:SectionViewModel">
+    
+    <Design.DataContext>
+        <viewModels:SectionViewModel/>
+    </Design.DataContext>
+    
+    <Grid>
+		<!-- <StackPanel Orientation="Horizontal"> -->
+			<StackPanel HorizontalAlignment="Left" Width="200" Background="DimGray">
+				<!-- Page Headers -->
+				<ListBox Background="OliveDrab" ItemsSource="{Binding Pages}" SelectedItem="{Binding SelectedPage}">
+				    <ListBox.ItemTemplate>
+					    <DataTemplate>
+						    <TextBlock Text="{Binding Title}" />
+					    </DataTemplate>
+				    </ListBox.ItemTemplate>
+				</ListBox>
+				<!-- TODO Add New Page -->
+			</StackPanel>
+			
+			<ContentControl Margin="200,0,0,0" Content="{Binding SelectedPage, Mode=TwoWay }">
+				<ContentControl.ContentTemplate>
+					<DataTemplate x:DataType="viewModels:PageViewModel">
+						<views:PageView DataContext="{Binding}" />
+					</DataTemplate>
+				</ContentControl.ContentTemplate>
+			</ContentControl>
+		<!-- </StackPanel> -->
+		 
+        
+		
+		
+    </Grid>
+</UserControl>
