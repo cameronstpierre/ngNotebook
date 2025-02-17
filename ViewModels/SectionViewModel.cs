@@ -3,7 +3,8 @@
 // Properties
 public sealed partial class SectionViewModel : ViewModelBase
 {
-    public Section? Section { get; }
+    public Section? Section { get; set; }
+    public ObservableCollection<PageViewModel> Pages { get; } = [];
     
     private PageViewModel? _selectedPage;
     public PageViewModel? SelectedPage
@@ -13,21 +14,22 @@ public sealed partial class SectionViewModel : ViewModelBase
         {
             if (_selectedPage != value)
             {
-                _selectedPage = value;
-                OnPropertyChanged(); // Notify the UI that SelectedPage has changed
+                _selectedPage = value != null ? new PageViewModel(value.Page) : null;
+                OnPropertyChanged();
             }
         }
     }
-
-    public ObservableCollection<PageViewModel> Pages { get; } = [];
-    
 
 }
 
 // Constructor
 public sealed partial class SectionViewModel
 {
-    public SectionViewModel() { }
+    public SectionViewModel()
+    {
+        
+    }
+    
     public SectionViewModel(Section section)
     {
         Section = section;

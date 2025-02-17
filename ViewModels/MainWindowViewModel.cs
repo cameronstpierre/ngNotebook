@@ -14,20 +14,69 @@ public partial class MainWindowViewModel
     {
         Sections =
         [
-            new SectionViewModel(new Section { Name = "Math", Pages = [new Page { Title = "Page 1", Content = ";l'amsd posdanf gdm afpodsafong polin a 1" }] }),
-            new SectionViewModel(new Section { Name = "Science", Pages = [new Page { Title = "Page 1", Content = "Content 1" }, new Page { Title = "Page 2", Content = "fdygjtyj 1" }] }),
-            new SectionViewModel(new Section { Name = "History", Pages = [new Page { Title = "Page 1", Content = "gseg0945iokndfokinerg 1" }, new Page { Title = "Page 2", Content = "54651695841 1" }, new Page { Title = "Page 3", Content = "pokmdsfg65987b56d1fb854g984er9tr8g49e8rgt4 1" }] })
+            new SectionViewModel(new Section
+            {
+                FilePath = @"C:\Projects\ngNotebook Data\Work",
+                Name = "Work",
+                Pages = [
+                    new Page
+                    {
+                        FilePath = @"C:\Projects\ngNotebook Data\Work\Page 1.txt",
+                        Title = "Page 1",
+                        Content = "This is content"
+                    },
+                    new Page
+                    {
+                        FilePath = @"C:\Projects\ngNotebook Data\Work\Page 2.txt",
+                        Title = "Page 2",
+                        Content = "This is [poop"
+                    },
+                ]
+            }),
+           
         ];
 
         SelectedSection = Sections.FirstOrDefault();
 
         //TODO Load Last Notebook
-
+        LoadNotebook();
     }
 }
 
 // Methods
 public partial class MainWindowViewModel
 {
-    
+    private void LoadNotebook()
+    {
+        Sections = [];        
+        
+        // get all directories in notebook path
+        try
+        {
+            var tempSections = Directory.GetDirectories(@"C:\Projects\ngNotebook Data");
+            for (var i = 0; i < tempSections.Length; i++)
+            {
+                // Create Section and its pages
+                var section = new SectionViewModel();
+
+                section.Section = new Section();
+                section.Section.FilePath = tempSections[i];
+                section.Section.Name = Path.GetFileName(tempSections[i]);
+                
+                var pages = Directory.GetFiles(tempSections[i]);
+                for (var j = 0; j < pages.Length; j++)
+                {
+                    var tempPage = new PageViewModel();
+                    tempPage.Title = Path.GetFileNameWithoutExtension(pages[j]);
+                    section.Pages.Add(tempPage);
+                }
+                
+                Sections?.Add(section);
+            }
+        }
+        catch (Exception ex)
+        {
+            var t = "";
+        }
+    }
 }
